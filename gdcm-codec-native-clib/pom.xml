@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>jpegloss-charls</artifactId>
+        <groupId>com.oritsh.imageIO</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>gdcm-codec-native-clib</artifactId>
+    <packaging>pom</packaging>
+
+    <properties>
+        <link.dir>${project.build.directory}/</link.dir>
+        <!--<link.dir>${basedir}/../../dcmtk-wrap-interface/target/classes/</link.dir>-->
+    </properties>
+
+
+    <profiles>
+        <profile>
+            <id>win32</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                    <arch>x86</arch>
+                </os>
+            </activation>
+            <modules>
+                <module>gdcm-codec-native-clib-win32</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>win64</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                    <arch>x86_64</arch>
+                </os>
+            </activation>
+            <modules>
+                <module>gdcm-codec-native-clib-win64</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>linux64</id>
+            <activation>
+                <os>
+                    <family>linux</family>
+                    <arch>x86_64</arch>
+                </os>
+            </activation>
+            <modules>
+                <module>gdcm-codec-native-clib-linux64</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>macosx</id>
+            <activation>
+                <os>
+                    <family>macosx</family>
+                    <arch>x86_64</arch>
+                </os>
+            </activation>
+            <modules>
+                <module>gdcm-codec-native-clib-macosx</module>
+            </modules>
+        </profile>
+    </profiles>
+
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>native-maven-plugin</artifactId>
+                    <version>1.0-alpha-8</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <javahOS>darwin</javahOS>
+                        <compilerProvider>generic-classic</compilerProvider>
+                        <compilerExecutable>c++</compilerExecutable>
+                        <linkerExecutable>c++</linkerExecutable>
+                        <sources>
+                            <source>
+                                <directory>../src/main/native</directory>
+                                <includes>
+                                    <include>*.cpp</include>
+                                </includes>
+                            </source>
+                            <!--<source>-->
+                            <!--<directory>../src/main/native/CharLS</directory>-->
+                            <!--<includes>-->
+                            <!--<include>*.cpp</include>-->
+                            <!--</includes>-->
+                            <!--</source>-->
+                        </sources>
+                        <compilerStartOptions>
+                            <compilerStartOption>-I${project.build.directory}/javah</compilerStartOption>
+                        </compilerStartOptions>
+                        <linkerEndOptions>
+                            <linkerEndOption>
+-lgdcmCommon -lgdcmDICT -lgdcmDSED -lgdcmIOD -lgdcmMEXD -lgdcmMSFF   -lgdcmcharls  -lgdcmexpat -lgdcmjpeg8  -lgdcmjpeg12  -lgdcmjpeg16 -lgdcmopenjpeg -lgdcmuuid -lgdcmzlib
+                            </linkerEndOption>
+                        </linkerEndOptions>
+                        <linkerOutputDirectory>${link.dir}</linkerOutputDirectory>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>javah</id>
+                            <phase>generate-sources</phase>
+                            <configuration>
+                                <javahProvider>default</javahProvider>
+                                <javahOutputDirectory>${project.build.directory}/javah</javahOutputDirectory>
+                                <workingDirectory>${basedir}</workingDirectory>
+                                <javahOutputFileName>wrap.h</javahOutputFileName>
+                                <javahClassNames>
+                                    <javahClassName>com.oritsh.imageIO.codec.gdcm.Decodec</javahClassName>
+                                </javahClassNames>
+                            </configuration>
+                            <goals>
+                                <goal>javah</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <configuration>
+                        <descriptors>
+                            <descriptor>assembly.xml</descriptor>
+                        </descriptors>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>zip</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>single</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+
+        </pluginManagement>
+
+    </build>
+
+
+</project>

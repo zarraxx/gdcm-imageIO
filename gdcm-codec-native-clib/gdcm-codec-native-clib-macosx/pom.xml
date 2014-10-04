@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>gdcm-codec-native-clib</artifactId>
+        <groupId>com.oritsh.imageIO</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>gdcm-codec-native-clib-macosx</artifactId>
+    <packaging>dylib</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.oritsh.imageIO</groupId>
+            <artifactId>gdcm-codec-native-interface</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>gdcm-codec-native-clib-macosx</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>native-maven-plugin</artifactId>
+                <configuration>
+                    <!-- trigger javah -->
+                    <javahOS>darwin</javahOS>
+                    <compilerEndOptions>
+                        <compilerEndOption>-I/usr/local/include/gdcm-2.4</compilerEndOption>
+                    </compilerEndOptions>
+                    <linkerStartOptions>
+                        <linkerStartOption>-dynamiclib </linkerStartOption>
+                    </linkerStartOptions>
+                    <linkerEndOptions>
+                        <linkerEndOption>
+                            -lgdcmCommon -lgdcmDICT -lgdcmDSED -lgdcmIOD -lgdcmMEXD -lgdcmMSFF   -lgdcmcharls  -lgdcmexpat -lgdcmjpeg8  -lgdcmjpeg12  -lgdcmjpeg16 -lgdcmopenjpeg -lgdcmuuid -lgdcmzlib
+                        </linkerEndOption>
+                    </linkerEndOptions>
+                    <linkerOutputDirectory>${link.dir}</linkerOutputDirectory>
+                    <linkerFinalName>libgdcmcodec</linkerFinalName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

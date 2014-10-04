@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>jpegloss-charls</artifactId>
+        <groupId>com.oritsh.imageIO</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>gdcm-codec</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.oritsh.imageIO</groupId>
+            <artifactId>gdcm-codec-native-clib-macosx</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>zip</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.oritsh.imageIO</groupId>
+            <artifactId>gdcm-codec-native-interface</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.oritsh.imageIO</groupId>
+            <artifactId>native-utils</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Dicom -->
+        <dependency>
+            <groupId>org.dcm4che</groupId>
+            <artifactId>dcm4che-core</artifactId>
+            <version>${dcm4che.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.dcm4che</groupId>
+            <artifactId>dcm4che-image</artifactId>
+            <version>${dcm4che.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.dcm4che</groupId>
+            <artifactId>dcm4che-imageio</artifactId>
+            <version>${dcm4che.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.dcm4che</groupId>
+            <artifactId>dcm4che-net</artifactId>
+            <version>${dcm4che.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.dcm4che</groupId>
+            <artifactId>dcm4che-imageio-rle</artifactId>
+            <version>${dcm4che.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.media</groupId>
+            <artifactId>jai_imageio</artifactId>
+            <version>1.2-pre-dr-b04</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-library</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <!--<goal>copy</goal>-->
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <!--<outputDirectory>${basedir}/target/classes/lib</outputDirectory>-->
+                            <stripVersion>true</stripVersion>
+                            <outputDirectory>${project.build.directory}/classes/lib</outputDirectory>
+                            <includeArtifactIds>gdcm-codec-native-clib-macosx</includeArtifactIds>
+                            <includeGroupIds>${project.groupId}</includeGroupIds>
+                            <excludeTransitive>true</excludeTransitive>
+                            <excludeTypes>pom</excludeTypes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+
+</project>
