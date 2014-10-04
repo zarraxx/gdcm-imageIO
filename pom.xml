@@ -23,6 +23,19 @@
         </repository>
     </repositories>
 
+    <distributionManagement>
+        <repository>
+            <id>oritsh-releases</id>
+            <name>oritsh-releases</name>
+            <url>http://www.oritsh.com/nexus/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>oritsh-snapshots</id>
+            <name>oritsh-snapshots</name>
+            <url>http://www.oritsh.com/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <dcm4che.version>3.2.0</dcm4che.version>
@@ -34,6 +47,21 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>native-maven-plugin</artifactId>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.1</version>
+                    <configuration>
+                        <attach>true</attach>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
