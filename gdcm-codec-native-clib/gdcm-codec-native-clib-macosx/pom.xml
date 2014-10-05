@@ -41,7 +41,7 @@
                         <compilerEndOption>-I/usr/local/include/gdcm-2.4</compilerEndOption>
                     </compilerEndOptions>
                     <linkerStartOptions>
-                        <linkerStartOption>-dynamiclib </linkerStartOption>
+                        <linkerStartOption>-dynamiclib -framework CoreFoundation -L/Users/zarra/opt/gdcm/lib </linkerStartOption>
                     </linkerStartOptions>
                     <linkerEndOptions>
                         <linkerEndOption>

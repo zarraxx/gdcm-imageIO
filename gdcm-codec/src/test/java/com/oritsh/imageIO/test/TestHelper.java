@@ -2,9 +2,7 @@ package com.oritsh.imageIO.test;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,5 +30,20 @@ public class TestHelper {
     public static void saveImage(BufferedImage image ,String name) throws IOException {
         String filename = String.format("target/%s.png",name);
         ImageIO.write(image, "png", new File(filename));
+    }
+
+    public static byte[] inputStreamToBytes(InputStream inputStream) throws IOException {
+        InputStream in = new BufferedInputStream(inputStream);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        int bufferSize = 8192;
+        byte[] buffer = new byte[bufferSize];
+
+        int readSize = 0;
+        do {
+            readSize = in.read(buffer);
+            outputStream.write(buffer, 0, readSize);
+        } while (readSize == bufferSize);
+        outputStream.flush();
+        return outputStream.toByteArray();
     }
 }

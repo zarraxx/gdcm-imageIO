@@ -121,6 +121,12 @@
                                 <javahOutputFileName>wrap.h</javahOutputFileName>
                                 <javahClassNames>
                                     <javahClassName>com.oritsh.imageIO.codec.gdcm.Decodec</javahClassName>
+                                    <javahClassName>com.oritsh.imageIO.codec.gdcm.PixelFormat</javahClassName>
+                                    <javahClassName>com.oritsh.imageIO.codec.gdcm.ImageCodec</javahClassName>
+                                    <javahClassName>com.oritsh.imageIO.codec.gdcm.ImageCodecFactory</javahClassName>
+                                    <javahClassName>com.oritsh.imageIO.codec.gdcm.JpegCodec</javahClassName>
+                                    <javahClassName>com.oritsh.imageIO.codec.gdcm.JpegLSCodec</javahClassName>
+                                    <javahClassName>com.oritsh.imageIO.codec.gdcm.Jpeg2KCodec</javahClassName>
                                 </javahClassNames>
                             </configuration>
                             <goals>

@@ -13,6 +13,8 @@ import org.junit.Test;
 import javax.imageio.ImageIO;
 import javax.imageio.spi.IIORegistry;
 import javax.imageio.spi.ImageReaderSpi;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,7 +31,15 @@ import static com.oritsh.imageIO.test.TestHelper.getResource;
  * Time: 下午12:48
  * Copyright Shanghai Orient Rain Information Technology Co.,Ltd.
  */
-public class DicomTest {
+public class DcmImageTest {
+
+    public static void showImage(BufferedImage image){
+        JFrame frame = new JFrame();
+        frame.getContentPane().setLayout(new FlowLayout());
+        frame.getContentPane().add(new JLabel(new ImageIcon(image)));
+        frame.pack();
+        frame.setVisible(true);
+    }
 
     @Before
     public void setup() throws IOException {
@@ -67,7 +77,9 @@ public class DicomTest {
 
         BufferedImage image = ImageIO.read(dcm);
 
-        ImageIO.write(image,"png",new File("jpeg.png"));
+        //showImage(image);
+
+        //ImageIO.write(image,"png",new File("jpeg.png"));
     }
 
     @Test
@@ -78,7 +90,7 @@ public class DicomTest {
 
         BufferedImage image = ImageIO.read(dcm);
 
-        ImageIO.write(image,"png",new File("jpeg2k.png"));
+        //ImageIO.write(image,"png",new File("jpeg2k.png"));
     }
 
     @Test
@@ -89,7 +101,7 @@ public class DicomTest {
 
         BufferedImage image = ImageIO.read(dcm);
 
-        ImageIO.write(image,"png",new File("jpegls.png"));
+        //ImageIO.write(image,"png",new File("jpegls.png"));
     }
 
 }
