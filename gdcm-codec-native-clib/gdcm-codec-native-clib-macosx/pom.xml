@@ -56,7 +56,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <descriptors>
-                        <descriptor>../gdcm-codec-native-clib-win64/assembly.xml</descriptor>
+                        <descriptor>assembly.xml</descriptor>
                     </descriptors>
                 </configuration>
             </plugin>
