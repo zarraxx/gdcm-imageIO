@@ -3,6 +3,7 @@ package com.oritsh.imageIO.codec.gdcm;
 /**
  * Created by zarra on 14-10-3.
  */
+@Deprecated
 public class Decodec {
 
     private ImageCodec imageCodec;
