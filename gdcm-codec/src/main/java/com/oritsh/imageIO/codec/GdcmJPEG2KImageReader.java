@@ -1,6 +1,7 @@
 package com.oritsh.imageIO.codec;
 
 import com.oritsh.imageIO.codec.gdcm.Decodec;
+import com.oritsh.imageIO.codec.gdcm.ImageCodecFactory;
 
 import javax.imageio.spi.ImageReaderSpi;
 
@@ -27,6 +28,6 @@ public class GdcmJPEG2KImageReader extends  GdcmImageReader {
 
     @Override
     protected Decodec createDecodec() {
-        return GdcmCodecFactory.decodec(Decodec.GdcmDecodec.JPEG2KDECODEC);
+        return GdcmCodecFactory.decodec(ImageCodecFactory.Codec.JPEG2KDECODEC);
     }
 }

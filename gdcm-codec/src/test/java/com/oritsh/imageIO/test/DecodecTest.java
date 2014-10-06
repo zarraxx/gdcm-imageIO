@@ -2,6 +2,7 @@ package com.oritsh.imageIO.test;
 
 import com.oritsh.imageIO.codec.GdcmCodecFactory;
 import com.oritsh.imageIO.codec.gdcm.Decodec;
+import com.oritsh.imageIO.codec.gdcm.ImageCodecFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -22,7 +23,7 @@ public class DecodecTest {
         inputStream.read(buffer);
 
 
-        Decodec decodec = GdcmCodecFactory.decodec(Decodec.GdcmDecodec.JPEGDECODEC);
+        Decodec decodec = GdcmCodecFactory.decodec(ImageCodecFactory.Codec.JPEGDECODEC);
 
         boolean b = decodec.getHeaderInfo(buffer);
 
@@ -49,7 +50,7 @@ public class DecodecTest {
         inputStream.read(buffer);
 
 
-        Decodec decodec = GdcmCodecFactory.decodec(Decodec.GdcmDecodec.JPEGLSDECODEC);
+        Decodec decodec = GdcmCodecFactory.decodec(ImageCodecFactory.Codec.JPEGLSDECODEC);
 
         boolean b = decodec.getHeaderInfo(buffer);
 
@@ -76,7 +77,7 @@ public class DecodecTest {
         inputStream.read(buffer);
 
 
-        Decodec decodec = GdcmCodecFactory.decodec(Decodec.GdcmDecodec.JPEG2KDECODEC);
+        Decodec decodec = GdcmCodecFactory.decodec(ImageCodecFactory.Codec.JPEG2KDECODEC);
 
         boolean b = decodec.getHeaderInfo(buffer);
 

@@ -4,70 +4,59 @@ package com.oritsh.imageIO.codec.gdcm;
  * Created by zarra on 14-10-3.
  */
 public class Decodec {
-    private long _npointer = -1;
 
-    private GdcmDecodec codec;
+    private ImageCodec imageCodec;
 
-    native private long _ninitCodec(int codec_index);
-
-    native private void _nclose(long _npointer);
-
-    native private boolean _ngetHeaderInfo(long _npointer,byte[] data);
-
-    native private int _ngetWidth(long _npointer);
-
-    native private int _ngetHeight(long _npointer);
-
-    native private int _ngetBitsAllocated(long _npointer);
-
-    native private int _ngetSamplesPerPixel(long _npointer);
-
-    native private byte[] _ndecode(long _npointer,byte[] inputData);
-
-    private long init(GdcmDecodec codec){
-        return _ninitCodec(codec.ordinal());
-    }
-
-    public enum GdcmDecodec{
-        JPEGDECODEC ,
-        JPEG2KDECODEC,
-        JPEGLSDECODEC
-    };
-
-    public Decodec(GdcmDecodec codec){
-        this.codec = codec;
-        this._npointer = init(this.codec);
-    }
-
-    public void dispose(){
-        if (_npointer != -1) {
-            this._nclose(_npointer);
-            _npointer = -1;
+    public Decodec(ImageCodecFactory.Codec codec){
+        switch (codec){
+            case JPEGDECODEC:
+                imageCodec = new JpegCodec();
+                break;
+            case JPEGLSDECODEC:
+                imageCodec = new JpegLSCodec();
+                break;
+            case JPEG2KDECODEC:
+                imageCodec = new Jpeg2KCodec();
+                break;
+            default:
+                break;
         }
     }
 
+    public void dispose(){
+        imageCodec.dispose();
+    }
+
     public boolean getHeaderInfo(byte[] data){
-        return _ngetHeaderInfo(_npointer,data);
+        PixelFormat pf = new PixelFormat();
+        pf.setScalarType(PixelFormat.ScalarType.INT8);
+        pf.setBitsAllocated(8);
+        pf.setSamplesPerPixel(1);
+        imageCodec.SetNumberOfDimensions(2);
+        imageCodec.SetPixelFormat(pf);
+        String s = imageCodec.GetHeaderInfo(data);
+        return s!=null;
     }
 
     public int getWidth(){
-        return  _ngetWidth(_npointer);
+        int w =  imageCodec.GetDimensions()[0];
+        return w;
     }
 
     public int getHeight(){
-        return _ngetHeight(_npointer);
+        return imageCodec.GetDimensions()[1];
     }
 
     public int getBitsAllocated(){
-        return _ngetBitsAllocated(_npointer);
+        return imageCodec.GetPixelFormat().getBitsAllocated();
     }
 
     public int getSamplesPerPixel(){
-        return _ngetSamplesPerPixel(_npointer);
+        return imageCodec.GetPixelFormat().getSamplesPerPixel();
     }
 
     public byte[] decode(byte[] input){
-        return _ndecode(_npointer,input);
+        return imageCodec.decode(input);
     }
 
     @Override

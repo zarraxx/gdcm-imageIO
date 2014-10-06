@@ -1,6 +1,7 @@
 package com.oritsh.imageIO.codec;
 
 import com.oritsh.imageIO.codec.gdcm.Decodec;
+import com.oritsh.imageIO.codec.gdcm.ImageCodecFactory;
 import com.oritsh.nativeUtils.NativeUtils;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ public class GdcmCodecFactory {
         }
     }
 
-    public static Decodec decodec(Decodec.GdcmDecodec codec){
+    public static Decodec decodec(ImageCodecFactory.Codec codec){
         Decodec decodec = new Decodec(codec);
         return decodec;
     }

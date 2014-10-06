@@ -28,7 +28,7 @@ public class TestHelper {
     }
 
     public static void saveImage(BufferedImage image ,String name) throws IOException {
-        String filename = String.format("target/%s.png",name);
+        String filename = String.format("%s.png",name);
         ImageIO.write(image, "png", new File(filename));
     }
 

@@ -182,16 +182,6 @@ public abstract class GdcmImageReader extends ImageReader {
     @Override
     public Raster readRaster(int frameIndex, ImageReadParam param) throws IOException {
         if (hasInit) {
-//            iis.mark();
-//            ImageInputStreamAdapter inputStreamAdapter = new ImageInputStreamAdapter(iis);
-//            BufferedInputStream inputStream = new BufferedInputStream(inputStreamAdapter);
-//            int cbufferSize = inputStream.available();
-//            byte[] cbuffer = new byte[cbufferSize];
-//            int read = inputStream.read(cbuffer);
-//
-//            System.out.println("read:"+read);
-//            iis.reset();
-
             byte[] uncompress = decodec.decode(rawData);
 
             InputStream unin = new ByteArrayInputStream(uncompress);
@@ -201,9 +191,9 @@ public abstract class GdcmImageReader extends ImageReader {
             DataBuffer buffer = sm.createDataBuffer();
 
             //int inputLength = dataInputStream.available();
-//
+            int bitsAllocated = decodec.getBitsAllocated();
             for (int i = 0; i < buffer.getSize(); i++) {
-                if (decodec.getBitsAllocated() > 8) {
+                if (bitsAllocated > 8) {
                     int v1 = dataInputStream.readUnsignedByte();
                     int v2 = dataInputStream.readUnsignedByte();
                     int high = v2 << 8 & 0xFFFF;

@@ -137,7 +137,5 @@ public class ImageCodecTest {
         byte[] out2 = codec.decode(compress);
 
         Assert.assertEquals(out.length,out2.length);
-
-
     }
 }

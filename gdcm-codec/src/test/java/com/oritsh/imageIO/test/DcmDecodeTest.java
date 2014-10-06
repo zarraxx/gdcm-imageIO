@@ -1,8 +1,7 @@
 package com.oritsh.imageIO.test;
 
-import com.oritsh.imageIO.codec.GdcmJPEG2KImageReaderSpi;
-import com.oritsh.imageIO.codec.GdcmJPEGImageReaderSpi;
-import com.oritsh.imageIO.codec.GdcmJPEGLSImageReaderSpi;
+import com.oritsh.imageIO.codec.*;
+import com.oritsh.nativeUtils.NativeUtils;
 import org.dcm4che.data.Attributes;
 import org.dcm4che.data.Tag;
 import org.dcm4che.data.UID;
@@ -10,6 +9,7 @@ import org.dcm4che.data.VR;
 import org.dcm4che.imageio.codec.Compressor;
 import org.dcm4che.imageio.codec.Decompressor;
 import org.dcm4che.imageio.codec.ImageReaderFactory;
+import org.dcm4che.imageio.codec.ImageWriterFactory;
 import org.dcm4che.io.DicomEncodingOptions;
 import org.dcm4che.io.DicomInputStream;
 import org.dcm4che.io.DicomOutputStream;
@@ -25,12 +25,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.oritsh.imageIO.test.TestHelper.getResource;
+import static com.oritsh.imageIO.test.TestHelper.saveImage;
 
 /**
  * Created by zarra on 14-10-5.
  */
 public class DcmDecodeTest {
-
+    static {
+        try {
+            System.loadLibrary("gdcmcodec");
+        } catch (UnsatisfiedLinkError e) {
+            try {
+                NativeUtils.load("gdcmcodec", GdcmCodecFactory.class);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
 
     @Before
     public void setup() throws IOException {
@@ -39,16 +50,23 @@ public class DcmDecodeTest {
         GdcmJPEG2KImageReaderSpi spi2k = new GdcmJPEG2KImageReaderSpi();
         GdcmJPEGLSImageReaderSpi spils = new GdcmJPEGLSImageReaderSpi();
 
+        GdcmImageWriterSpi wspi = new GdcmImageWriterSpi();
+
         IIORegistry reg = IIORegistry.getDefaultInstance();
 
         reg.registerServiceProvider(spi);
         reg.registerServiceProvider(spi2k);
         reg.registerServiceProvider(spils);
+        reg.registerServiceProvider(wspi);
 
         InputStream in  = getResource("ImageReaderFactory.properties");
+        InputStream inw  = getResource("ImageWriterFactory.properties");
         ImageReaderFactory readerFactory = ImageReaderFactory.getDefault();
         readerFactory.load(in);
         ImageReaderFactory.setDefault(readerFactory);
+        ImageWriterFactory writerFactory = ImageWriterFactory.getDefault();
+        writerFactory.load(inw);
+        writerFactory.setDefault(writerFactory);
     }
 
     static public void saveDataset(Attributes dataset,Attributes fmi,String tsuid,OutputStream dest)
@@ -106,7 +124,7 @@ public class DcmDecodeTest {
         saveDataset(dataset,fmi,tsuid,dest);
     }
 
-    @Test
+    //@Test
     public void run1() throws IOException {
         InputStream dcm = getResource("jpeg.dcm");
         DicomInputStream dis = new DicomInputStream(dcm);
@@ -120,13 +138,46 @@ public class DcmDecodeTest {
 
     @Test
     public void run2() throws IOException {
-        InputStream dcm = getResource("jpeg2k.dcm");
+        InputStream dcm = getResource("decode.dcm");
         DicomInputStream dis = new DicomInputStream(dcm);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        decode(dis,null,outputStream);
+
+        encode(dis,UID.JPEGLSLossless,outputStream);
+        //decode(dis,null,outputStream);
 
         ByteArrayInputStream in = new ByteArrayInputStream(outputStream.toByteArray());
         BufferedImage image = ImageIO.read(in);
-        DcmImageTest.showImage(image);
+
+        saveImage(image,"jplslossless");
+    }
+
+    @Test
+         public void run3() throws IOException {
+        InputStream dcm = getResource("decode.dcm");
+        DicomInputStream dis = new DicomInputStream(dcm);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        encode(dis,UID.JPEGLossless,outputStream);
+        //decode(dis,null,outputStream);
+
+        ByteArrayInputStream in = new ByteArrayInputStream(outputStream.toByteArray());
+        BufferedImage image = ImageIO.read(in);
+
+        saveImage(image,"jplossless");
+    }
+
+    @Test
+    public void run4() throws IOException {
+        InputStream dcm = getResource("decode.dcm");
+        DicomInputStream dis = new DicomInputStream(dcm);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        encode(dis,UID.JPEG2000,outputStream);
+        //decode(dis,null,outputStream);
+
+        ByteArrayInputStream in = new ByteArrayInputStream(outputStream.toByteArray());
+        BufferedImage image = ImageIO.read(in);
+
+        saveImage(image,"jpeg2000");
     }
 }
