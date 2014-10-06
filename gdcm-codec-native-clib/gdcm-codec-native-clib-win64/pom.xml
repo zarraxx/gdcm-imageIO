@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>gdcm-codec-native-clib-macosx</artifactId>
-    <packaging>dylib</packaging>
+    <artifactId>gdcm-codec-native-clib-win64</artifactId>
+    <packaging>dll</packaging>
 
     <dependencies>
         <dependency>
@@ -36,16 +36,16 @@
                 <artifactId>native-maven-plugin</artifactId>
                 <configuration>
                     <!-- trigger javah -->
-                    <javahOS>darwin</javahOS>
+                    <javahOS>win32</javahOS>
                     <compilerEndOptions>
-                        <compilerEndOption>-I/usr/local/include/gdcm-2.4</compilerEndOption>
+                        <compilerEndOption>-IC:\MinGW\msys\1.0\opt\windows_64\include\gdcm-2.4 -DNDEBUG</compilerEndOption>
                     </compilerEndOptions>
                     <linkerStartOptions>
-                        <linkerStartOption>-dynamiclib -framework CoreFoundation -L/Users/zarra/opt/gdcm/lib </linkerStartOption>
+                        <linkerStartOption>-shared  </linkerStartOption>
                     </linkerStartOptions>
                     <linkerEndOptions>
                         <linkerEndOption>
-                            -lgdcmCommon -lgdcmDICT -lgdcmDSED -lgdcmIOD -lgdcmMEXD -lgdcmMSFF   -lgdcmcharls  -lgdcmexpat -lgdcmjpeg8  -lgdcmjpeg12  -lgdcmjpeg16 -lgdcmopenjpeg -lgdcmuuid -lgdcmzlib
+                            -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -lws2_32 -lnetapi32 -lwsock32  -lgdcmCommon -lgdcmDICT -lgdcmDSED -lgdcmIOD -lgdcmMEXD -lgdcmMSFF   -lgdcmcharls  -lgdcmexpat -lgdcmjpeg8  -lgdcmjpeg12  -lgdcmjpeg16 -lgdcmopenjpeg  -lgdcmzlib
                         </linkerEndOption>
                     </linkerEndOptions>
                     <linkerOutputDirectory>${link.dir}</linkerOutputDirectory>
@@ -56,7 +56,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <descriptors>
-                        <descriptor>../gdcm-codec-native-clib-win64/assembly.xml</descriptor>
+                        <descriptor>assembly.xml</descriptor>
                     </descriptors>
                 </configuration>
             </plugin>

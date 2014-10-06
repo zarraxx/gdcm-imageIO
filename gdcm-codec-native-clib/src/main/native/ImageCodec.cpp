@@ -101,7 +101,8 @@ JNIEXPORT jintArray JNICALL Java_com_oritsh_imageIO_codec_gdcm_ImageCodec__1nGet
     int size = 3;//c->GetNumberOfDimensions();
     const unsigned int* d = c->GetDimensions();
     jintArray result = env->NewIntArray(size);
-    env->SetIntArrayRegion(result, 0, size, (const int*)d);
+    const jint is[] = {d[0],d[1],d[2]};
+    env->SetIntArrayRegion(result, 0, size, is);
     return result;
 }
 

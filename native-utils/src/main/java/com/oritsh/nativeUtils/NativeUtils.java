@@ -92,7 +92,7 @@ public class NativeUtils {
             realFilename = String.format("lib%s.so",library);
         }
         else if(OSInfo.isWindows()){
-            realFilename = String.format("%s.dll",library);
+            realFilename = String.format("lib%s.dll",library);
         }
 
         loadLibraryFromJar("/lib/"+realFilename,clazz);
